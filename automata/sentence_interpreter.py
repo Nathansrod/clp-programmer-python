@@ -72,6 +72,8 @@ while(error == False and accepted == False and charIndex < len(sentence)):
         else: #Couldn't find an empty transition. This is an error
                 error = True
 
+
+print(f"stopState: {stateIndex}")
 if(stateIndex == 4 or stateIndex == 7 or stateIndex == 9):
     if(automaton.readFromStack('$')):
         print(f"Sentence: {sentence} is accepted")

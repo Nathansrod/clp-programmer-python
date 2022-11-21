@@ -60,7 +60,9 @@ class Automaton:
         #State 4
         self.states.append(State(
             [Transition(')','X','?',4),
-             Transition('?','$','?',10)],
+             Transition('?','$','?',10),
+             Transition('|','?','?',6),
+             Transition('^','?','?',6)],
             False
         ))
         #State 5
