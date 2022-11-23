@@ -41,7 +41,8 @@ class Automaton:
         ))
         #State 1
         self.states.append(State(
-            [Transition('o','?','?',2)],
+            [Transition('o','?','?',2),
+             Transition('b','?','?',2)],
             False
         ))
         #State 2
@@ -54,7 +55,8 @@ class Automaton:
             [Transition('!','?','?',5),
              Transition('(','?','X',8),
              Transition('i','?','?',4),
-             Transition('o','?','?',4)],
+             Transition('o','?','?',4),
+             Transition('b','?','?',4)],
             False
         ))
         #State 4
@@ -69,21 +71,25 @@ class Automaton:
         self.states.append(State(
             [Transition('(','?','X',8),
              Transition('i','?','?',7),
-             Transition('o','?','?',7)],
+             Transition('o','?','?',7),
+             Transition('b','?','?',7)],
             False
         ))
         #State 6
         self.states.append(State(
             [Transition('(','?','X',8),
              Transition('i','?','?',9),
-             Transition('o','?','?',9)],
+             Transition('o','?','?',9),
+             Transition('b','?','?',9),
+             Transition('!','?','?',5)],
             False
         ))
         #State 7
         self.states.append(State(
             [Transition('^','?','?',6),
              Transition('|','?','?',6),
-             Transition('?','$','?',10)],
+             Transition('?','$','?',10),
+             Transition(')','X','?',4)],
             False
         ))
         #State 8
@@ -91,6 +97,7 @@ class Automaton:
             [Transition('(','?','X',8),
              Transition('i','?','?',11),
              Transition('o','?','?',11),
+             Transition('b','?','?',11),
              Transition('!','?','?',5)],
             False
         ))
@@ -116,6 +123,7 @@ class Automaton:
         self.states.append(State(
             [Transition('i','?','?',13),
              Transition('o','?','?',13),
+             Transition('b','?','?',13),
              Transition('(','?','X',8)],
             False
         ))
