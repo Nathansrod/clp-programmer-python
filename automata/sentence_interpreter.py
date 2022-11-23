@@ -1,4 +1,4 @@
-from automaton import *
+from .automaton import Automaton
 
 def interpretSentece(sentence):
     automaton = Automaton()
