@@ -1,6 +1,6 @@
 import constants
 
-def resolve(notation, inputs, outputs):
+def resolve(notation, inputs, outputs, booleans):
   in_out = []
   
   index = 0
@@ -12,6 +12,8 @@ def resolve(notation, inputs, outputs):
         notation[index] = inputs[address - 1]
       elif notation[index][0] == 'o':
         notation[index] = outputs[address - 1]
+      elif notation[index][0] == 'b':
+        notation[index] = booleans[address - 1]
     index += 1
 
   for item in notation:
@@ -33,7 +35,3 @@ def resolve(notation, inputs, outputs):
           in_out.append(operation)
 
   return in_out
-
-notation = ['i1', 'i2', '^', 'o1', 'i2', '^', '|']
-inputs = [True, False]
-outputs = [True]
