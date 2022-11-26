@@ -1,14 +1,14 @@
 import PySimpleGUI as sg
 
-def authorsWindow():
+def errorWindow(title, message):
     sg.theme('DarkBlue')
+
     layout = [
-        [sg.Text('Programador de CLPs, utilizando linguagens de sentenças lógicas com parenteses balanceados.')],
-        [sg.Text('Autores: Alexandre Londe, Esdras Santos, Júlia Cordeiro e Nathan Rodrigues')],
+        [sg.Text(message)],
         [sg.Button('Voltar')]
     ]
 
-    window = sg.Window('Sobre...', layout)
+    window = sg.Window(title, layout)
 
     while True:
         event, values = window.read()

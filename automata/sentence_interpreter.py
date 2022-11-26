@@ -121,13 +121,14 @@ def interpretSentece(sentence):
         print(f"stopState: {stateIndex}")
         if((stateIndex == 4 or stateIndex == 7 or stateIndex == 9) and not error):
             if(automaton.readFromStack('$')):
-                print(f"Sentence: {original_sentence} is accepted")
+                #print(f"Sentence: {original_sentence} is accepted")
+                return 0
             else:
-                print(f"Sentence: {original_sentence} is rejected")    
+                #print(f"Sentence: {original_sentence} is rejected")    
+                return 1
         else:
-            print(f"Sentence: {original_sentence} is rejected")
-
-        if(error):
-            print("Syntax error!")
+            #print(f"Sentence: {original_sentence} is rejected")
+            return 1
     else:
-        print("Invalid label!")
+        #print("Invalid label!")
+        return 2
