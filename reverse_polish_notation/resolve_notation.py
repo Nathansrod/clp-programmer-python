@@ -8,11 +8,11 @@ def resolve(notation, inputs, outputs, booleans):
     while(index < len(notation)):
         if notation[index] not in OPERATORS:
             address = int(notation[index][1])
-            if notation[index][0] == 'i':
+            if notation[index][0] == 'I':
                 notation[index] = inputs[address - 1]
-            elif notation[index][0] == 'o':
+            elif notation[index][0] == 'O':
                 notation[index] = outputs[address - 1]
-            elif notation[index][0] == 'b':
+            elif notation[index][0] == 'B':
                 notation[index] = booleans[address - 1]
         index += 1
 
