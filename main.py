@@ -1,10 +1,12 @@
 import PySimpleGUI as sg
 from views import authors, error, program_help, compile_success, confirm_new
 import automata.sentence_interpreter as senInt
-import reverse_polish_notation.create_notation as createRpn
-import reverse_polish_notation.resolve_notation as resolveRpn
+#from reverse_polish_notation import create_notation, logical_structure
+import reverse_polish_notation.create_notation as create_notation
+import reverse_polish_notation.logical_structure as logical_structure
 
 sg.theme('DarkBlue') #Add a touch of color
+logicalStructure = logical_structure.LogicalStructure([]) #Creating an empty logicalStructure
 
 #All the stuff inside your window.
 menu_def = [['Programa', ['Novo', 'Abrir', 'Salvar']],
@@ -97,7 +99,28 @@ def compileProgram(program): #Compiles the program. Each individual line is subm
     if(len(errorList) != 0): #Error list is not empty
         error.errorWindow('Erro!', 'Erros de compilação detectado, verifique a ajuda.')
     else:
+        polishNotations = []
+        for line in programLines: #Generate one polish tuple for each line in program
+            line = line.replace(' ','')
+            line = line.upper()
+            newPolish = create_notation.reverse_polish_notation(line)
+            identifier = line.split('=')[0]
+            polishNotations.append((identifier, newPolish)) #Pushes the tuple into the array
+
+        logicalStructure.updatePolishNotations(polishNotations)
+        print(logicalStructure)
         compile_success.compileSuccessWindow()
+
+def executeProgram():
+    byte = '00000000'
+    #TODO replace test code with Arduino communication
+    while(len(byte) == 8):
+        byte = input()
+        if(len(byte) == 8):
+            logicalStructure.updateInputs(list(byte))
+            logicalStructure.updateOutputs()
+            updateScreenValues(logicalStructure.inputs, logicalStructure.outputs, logicalStructure.booleans)
+
 
 def updateScreenValues(inputs, outputs, bools): #Updates values shown in screen
     i = 0
