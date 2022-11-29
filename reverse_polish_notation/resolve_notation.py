@@ -34,4 +34,4 @@ def resolve(notation, inputs, outputs, booleans):
                     operation = frist_op or second_op
                     in_out.append(operation)
 
-    return in_out
+    return in_out[0]

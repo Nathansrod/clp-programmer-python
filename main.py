@@ -7,6 +7,7 @@ import reverse_polish_notation.logical_structure as logical_structure
 
 sg.theme('DarkBlue') #Add a touch of color
 logicalStructure = logical_structure.LogicalStructure([]) #Creating an empty logicalStructure
+inExecution = False
 
 #All the stuff inside your window.
 menu_def = [['Programa', ['Novo', 'Abrir', 'Salvar']],
@@ -112,15 +113,20 @@ def compileProgram(program): #Compiles the program. Each individual line is subm
         compile_success.compileSuccessWindow()
 
 def executeProgram():
-    byte = '00000000'
-    #TODO replace test code with Arduino communication
-    while(len(byte) == 8):
-        byte = input()
-        if(len(byte) == 8):
-            logicalStructure.updateInputs(list(byte))
-            logicalStructure.updateOutputs()
-            updateScreenValues(logicalStructure.inputs, logicalStructure.outputs, logicalStructure.booleans)
-
+    print("Type simulation input byte: ")
+    byte = input()
+    if(len(byte) == 8):
+        byteList = list(byte)
+        i = 0
+        while i < len(byteList):
+            if(byteList[i] == '1'):
+                byteList[i] = True
+            else:
+                byteList[i] = False
+            i += 1
+        logicalStructure.updateInputs(byteList)
+        logicalStructure.updateOutputs()
+        updateScreenValues(logicalStructure.inputs, logicalStructure.outputs, logicalStructure.booleans)
 
 def updateScreenValues(inputs, outputs, bools): #Updates values shown in screen
     i = 0
@@ -139,10 +145,12 @@ def updateScreenValues(inputs, outputs, bools): #Updates values shown in screen
 
 #Event Loop to process "events" and get the "values" of the inputs
 while True:
-    event, values = window.read()
+    print('at loop start')
+    event, values = window.read(timeout=10) #Awaits 10ms for an event
     if event == sg.WIN_CLOSED: #if user closes window
         break
 
+    #Answering to commands on screen menu
     if event == 'Novo':
         if(confirm_new.confirmNewProgram()):
             window['k_input_area'].update('')
@@ -153,6 +161,8 @@ while True:
         #TODO código de salvar programa em .txt
         print('Salvar')
     elif event == 'Compilar':
+        print('Compilar')
+        inExecution = False
         program = window['k_input_area'].get()
         if(len(program) == 0):
             error.errorWindow('Erro!','A área de programação está vazia.')
@@ -163,10 +173,10 @@ while True:
         print('Conectar')
     elif event == 'Executar':
         print('Executar')
-        executeProgram()
+        inExecution = True
     elif event == 'Parar':
-        #TODO código que para a execução do programa compilado
         print('Parar')
+        inExecution = False
     elif event == 'Sobre...':
         window.disappear()
         authors.authorsWindow()
@@ -175,5 +185,8 @@ while True:
         window.disappear()
         program_help.programHelpWindow()
         window.reappear()
+
+    if inExecution:
+        executeProgram()
 
 window.close()
