@@ -5,7 +5,7 @@ def confirmNewProgram():
     returnVal = False
 
     layout = [
-        [sg.Text('Criar um novo programa irá apagar o que não foi salvo.')],
+        [sg.Text('Criar/Abrir um novo programa irá apagar o que não foi salvo.')],
         [sg.Column([[sg.Button('Voltar'), sg.Button('Confirmar')]], justification='center')]
     ]
 

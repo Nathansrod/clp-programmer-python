@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from views import authors, error, program_help, compile_success, confirm_new
+from views import authors, error, program_help, compile_success, confirm_new, file_controller
 import automata.sentence_interpreter as senInt
 #from reverse_polish_notation import create_notation, logical_structure
 import reverse_polish_notation.create_notation as create_notation
@@ -143,9 +143,30 @@ def updateScreenValues(inputs, outputs, bools): #Updates values shown in screen
         window[keyBoolean].update(bools[i])
         i += 1
 
+def saveProgram():
+    path = file_controller.saveFileWindow()
+    program = window['k_input_area'].get()
+    print(f'Filepath: {path}')
+    try:
+        file = open(path, 'w')
+        file.write(program)
+        file.close()
+    except:
+        error.errorWindow('Erro!','Não foi possivel salvar o arquivo \nno caminho especificado.')
+
+def openProgram():
+    path = file_controller.openFileWindow()
+    try:
+        file = open(path, 'r')
+        program = file.read()
+        file.close()
+        return program
+    except:
+        error.errorWindow('Erro!', 'Não foi possível abrir o \narquivo especificado.')
+        return ''
+
 #Event Loop to process "events" and get the "values" of the inputs
 while True:
-    print('at loop start')
     event, values = window.read(timeout=10) #Awaits 10ms for an event
     if event == sg.WIN_CLOSED: #if user closes window
         break
@@ -155,11 +176,17 @@ while True:
         if(confirm_new.confirmNewProgram()):
             window['k_input_area'].update('')
     elif event == 'Abrir':
-        #TODO código de abrir programa a partir de um .txt
         print('Abrir')
+        window.disappear()
+        if(confirm_new.confirmNewProgram()):
+            program = openProgram()
+            window['k_input_area'].update(program)
+        window.reappear()
     elif event == 'Salvar':
-        #TODO código de salvar programa em .txt
         print('Salvar')
+        window.disappear()
+        saveProgram()
+        window.reappear()
     elif event == 'Compilar':
         print('Compilar')
         inExecution = False
