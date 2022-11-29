@@ -1,10 +1,12 @@
 import PySimpleGUI as sg
 from views import authors, error, program_help, compile_success, confirm_new
 import automata.sentence_interpreter as senInt
+import reverse_polish_notation.create_notation as createRpn
+import reverse_polish_notation.resolve_notation as resolveRpn
 
-sg.theme('DarkBlue')   # Add a touch of color
+sg.theme('DarkBlue') #Add a touch of color
 
-# All the stuff inside your window.
+#All the stuff inside your window.
 menu_def = [['Programa', ['Novo', 'Abrir', 'Salvar']],
             ['Comandos', ['Compilar']],
             ['CLP', ['Conectar', 'Executar', 'Parar']],
@@ -96,6 +98,21 @@ def compileProgram(program): #Compiles the program. Each individual line is subm
         error.errorWindow('Erro!', 'Erros de compilação detectado, verifique a ajuda.')
     else:
         compile_success.compileSuccessWindow()
+
+def updateScreenValues(inputs, outputs, bools): #Updates values shown in screen
+    i = 0
+    while i < 8:
+        keyInput = f'k_i{i+1}_state'
+        keyOutput = f'k_o{i+1}_state'
+        window[keyInput].update(inputs[i])
+        window[keyOutput].update(outputs[i])
+        i += 1
+    
+    i = 0
+    while i < 16:
+        keyBoolean = f'k_b{i+1}_state'
+        window[keyBoolean].update(bools[i])
+        i += 1
 
 #Event Loop to process "events" and get the "values" of the inputs
 while True:
