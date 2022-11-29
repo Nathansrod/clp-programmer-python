@@ -162,8 +162,8 @@ while True:
         #TODO código de conectar ao CLP
         print('Conectar')
     elif event == 'Executar':
-        #TODO código de iniciar a execução do programa compilado
         print('Executar')
+        executeProgram()
     elif event == 'Parar':
         #TODO código que para a execução do programa compilado
         print('Parar')

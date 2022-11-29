@@ -1,4 +1,4 @@
-import resolve_notation as rn
+from .resolve_notation import resolve
 
 class LogicalStructure:
     polishNotations = []
@@ -16,12 +16,14 @@ class LogicalStructure:
         for polishTuple in self.polishNotations:
             identifier = polishTuple[0]
             polish = polishTuple[1]
-            resolvedValue = rn.resolve(polish, self.inputs, self.outputs, self.booleans)
+            resolvedValue = resolve(polish, self.inputs, self.outputs, self.booleans)
+            print(f"\t>RESOLVING: identifier:{identifier} polish:{polish} resolvedValue:{resolvedValue}")
             address = int(identifier[1]) - 1
             if(identifier[0] == 'O'):
                 self.outputs[address] = resolvedValue
             elif(identifier[0] == 'B'):
                 self.booleans[address] = resolvedValue
+        print(f"Outputs updated in LogicalStructure, outputs: {self.outputs}")
 
     def clearPolish(self):
         self.polishNotations.clear()
@@ -30,12 +32,12 @@ class LogicalStructure:
     def updatePolishNotations(self, polishNotations):
         self.clearPolish()
         self.polishNotations = polishNotations
-        print("Polish notations updated in Logical Structure")
+        print(f"Polish notations updated in LogicalStructure, polishNotations: {self.polishNotations}")
 
     def updateInputs(self, inputs):
         self.inputs = inputs
-        print("Inputs updated in LogicalStructure")
+        print(f"Inputs updated in LogicalStructure, inputs: {self.inputs}")
 
     def updateBooleans(self, booleans):
         self.booleans = booleans
-        print("Booleans updated in LogicalStructure")
+        print(f"Booleans updated in LogicalStructure, booleans: {self.booleans}")
