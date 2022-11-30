@@ -14,9 +14,10 @@ def reverse_polish_notation(output):
     while i_exp < exp_end:
         if exp[i_exp] not in OPERATORS and exp[i_exp] != ")":
             if exp[i_exp] == 'B':
-                if exp[i_exp+2].isnumeric():
-                    polish.append(exp[i_exp:i_exp+3])
-                    i_exp += 1
+                if len(exp) > i_exp+2:
+                    if exp[i_exp+2].isnumeric():
+                        polish.append(exp[i_exp:i_exp+3])
+                        i_exp += 1
                 else:
                   polish.append(exp[i_exp:i_exp+2])  
             else:

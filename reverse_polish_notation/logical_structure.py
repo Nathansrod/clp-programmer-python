@@ -24,6 +24,7 @@ class LogicalStructure:
             elif(identifier[0] == 'B'):
                 self.booleans[address] = resolvedValue
         print(f"Outputs updated in LogicalStructure, outputs: {self.outputs}")
+        return self.outputs
 
     def clearPolish(self):
         self.polishNotations.clear()
@@ -41,3 +42,8 @@ class LogicalStructure:
     def updateBooleans(self, booleans):
         self.booleans = booleans
         print(f"Booleans updated in LogicalStructure, booleans: {self.booleans}")
+
+    def resetStructure(self):
+        self.inputs = [False,False,False,False,False,False,False,False]
+        self.outputs = [False,False,False,False,False,False,False,False]
+        self.booleans = [False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False]
