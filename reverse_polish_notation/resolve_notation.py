@@ -4,26 +4,22 @@ def resolve(notation, inputs, outputs, booleans):
     in_out = []
     
     index = 0
-    print('-------------------------------')
-    print(notation)
     notation_resolve = []
 
     for index in range(0, len(notation)):
-        print(notation[index])
         if notation[index] not in OPERATORS:
             address = int(notation[index][1])
-            print(address)
             if notation[index][0] == 'I':
                 notation_resolve.insert(index, inputs[address - 1])
             elif notation[index][0] == 'O':
                 notation_resolve.insert(index, outputs[address - 1])
             elif notation[index][0] == 'B':
+                if len(notation[index]) == 3:
+                    address = int(notation[index][1::])
                 notation_resolve.insert(index, booleans[address - 1])
         else:
             notation_resolve.insert(index, notation[index])
         index += 1
-
-    print(notation_resolve)
 
     for item in notation_resolve:
         if item not in OPERATORS:

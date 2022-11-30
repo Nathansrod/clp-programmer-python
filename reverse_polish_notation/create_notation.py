@@ -1,4 +1,4 @@
-#import constants
+# import constants
 from .constants import OPERATORS
 
 def reverse_polish_notation(output):
@@ -13,7 +13,14 @@ def reverse_polish_notation(output):
 
     while i_exp < exp_end:
         if exp[i_exp] not in OPERATORS and exp[i_exp] != ")":
-            polish.append(exp[i_exp:i_exp+2])
+            if exp[i_exp] == 'B':
+                if exp[i_exp+2].isnumeric():
+                    polish.append(exp[i_exp:i_exp+3])
+                    i_exp += 1
+                else:
+                  polish.append(exp[i_exp:i_exp+2])  
+            else:
+                polish.append(exp[i_exp:i_exp+2])
             i_exp += 1
         else:
             if exp[i_exp] in OPERATORS:
