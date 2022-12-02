@@ -1,8 +1,16 @@
 import serial
+import serial.tools.list_ports
+
+#Port initialization
+portList = [comport.device for comport in serial.tools.list_ports.comports()]
+print(portList)
+portName = portList[0]
 
 #Serial Configuration
 #Remeber to check which port linux assigned the Arduino. It is usually /dev/ttyACM0 or /dev/ttyACM1
-port = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=5)
+
+
+port = serial.Serial(port=portName, baudrate=9600, timeout=5)
 
 def estabilishConnection():
     print('SERIAL> Attempting connection...')

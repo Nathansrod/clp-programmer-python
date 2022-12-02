@@ -10,6 +10,7 @@ sg.theme('DarkBlue') #Add a touch of color
 logicalStructure = logical_structure.LogicalStructure([]) #Creating an empty logicalStructure
 inExecution = False
 isConnected = False
+serialPortId = comm.portName
 
 #All the stuff inside your window.
 menu_def = [['Programa', ['Novo', 'Abrir', 'Salvar']],
@@ -184,7 +185,7 @@ def openProgram():
 
 def setConnected(bool):
     if(bool == True):
-        window['k_conn_text'].update('Conectado ao CLP')
+        window['k_conn_text'].update(f'Conectado ao CLP ({serialPortId})')
         return True
     else:
         window['k_conn_text'].update('Não Conectado')
