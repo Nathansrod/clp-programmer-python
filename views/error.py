@@ -4,7 +4,7 @@ def errorWindow(title, message):
     sg.theme('DarkBlue')
 
     layout = [
-        [sg.Text(message)],
+        [sg.Text(message, expand_x=True)],
         [sg.Button('Voltar')]
     ]
 

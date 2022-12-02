@@ -10,7 +10,7 @@ sg.theme('DarkBlue') #Add a touch of color
 logicalStructure = logical_structure.LogicalStructure([]) #Creating an empty logicalStructure
 inExecution = False
 isConnected = False
-serialPortId = comm.portName
+serialPort = comm.initializeSerial()
 
 #All the stuff inside your window.
 menu_def = [['Programa', ['Novo', 'Abrir', 'Salvar']],
@@ -102,7 +102,7 @@ def compileProgram(program): #Compiles the program. Each individual line is subm
         i += 1
     
     if(len(errorList) != 0): #Error list is not empty
-        error.errorWindow('Erro!', 'Erros de compilação detectado, verifique a ajuda.')
+        error.errorWindow('Erro!', 'Erros de compilação detectados, verifique a ajuda.')
     else:
         polishNotations = []
         for line in programLines: #Generate one polish tuple for each line in program
@@ -117,7 +117,7 @@ def compileProgram(program): #Compiles the program. Each individual line is subm
         compile_success.compileSuccessWindow()
 
 def executeProgram():
-    byte = comm.readButtons()
+    byte = comm.readButtons(serialPort)
     string = byte.decode('ascii')
     string = string[1:9]
     print(f'EXEC> {string}')
@@ -142,10 +142,9 @@ def executeProgram():
         
         responseString = responseString + '#'
         encodedString = responseString.encode('utf-8')
-        comm.sendLedByte(encodedString)
+        comm.sendLedByte(serialPort, encodedString)
         updateScreenValues(logicalStructure.inputs, logicalStructure.outputs, logicalStructure.booleans)
-    
-
+   
 def updateScreenValues(inputs, outputs, bools): #Updates values shown in screen
     i = 0
     while i < 8:
@@ -170,7 +169,7 @@ def saveProgram():
         file.write(program)
         file.close()
     except:
-        error.errorWindow('Erro!','Não foi possivel salvar o arquivo \nno caminho especificado.')
+        error.errorWindow('Erro!','Não foi possivel salvar o arquivo no caminho especificado.')
 
 def openProgram():
     path = file_controller.openFileWindow()
@@ -180,12 +179,12 @@ def openProgram():
         file.close()
         return program
     except:
-        error.errorWindow('Erro!', 'Não foi possível abrir o \narquivo especificado.')
+        error.errorWindow('Erro!', 'Não foi possível abrir o arquivo especificado.')
         return ''
 
 def setConnected(bool):
     if(bool == True):
-        window['k_conn_text'].update(f'Conectado ao CLP ({serialPortId})')
+        window['k_conn_text'].update(f'Conectado ao CLP ({serialPort.port})')
         return True
     else:
         window['k_conn_text'].update('Não Conectado')
@@ -232,21 +231,24 @@ while True:
             compileProgram(program)
     elif event == 'Conectar':
         print('Conectar')
-        if(comm.estabilishConnection() == True):
-            isConnected = setConnected(True)
+        if(serialPort != 'none'):
+            if(comm.estabilishConnection(serialPort) == True):
+                isConnected = setConnected(True)
+            else:
+                isConnected = setConnected(False)
+                error.errorWindow('Erro!', 'Não foi possível conectar ao dispositivo')
         else:
-            isConnected = setConnected(False)
-            error.errorWindow('Erro!', 'Não foi possível conectar\nao dispositivo')
+            error.errorWindow('Erro!', 'Nenhum dispositivo foi detectado')
     elif event == 'Executar':
         print('Executar')
         if(isConnected):
             inExecution = setExecution(True)
         else:
-            error.errorWindow('Erro!', 'Não há dispositivo\nconectado')
+            error.errorWindow('Erro!', 'Não há dispositivo conectado')
     elif event == 'Parar':
         print('Parar')
         logicalStructure.resetStructure()
-        comm.sendLedByte(b'@00000000#')
+        comm.sendLedByte(serialPort, b'@00000000#')
         updateScreenValues(logicalStructure.inputs, logicalStructure.outputs, logicalStructure.booleans)
         inExecution = setExecution(False)
         isConnected = setConnected(False)
